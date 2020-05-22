@@ -1,26 +1,16 @@
 const express = require('express');
-const crypto = require('crypto');
 const routes = express.Router();
 const connection = require('./database/connection');
 
-routes.post('/usuario/', async (request, response) => {
-    const { nome, email, telefone} = request.body;
-    const id = crypto.randomBytes(4).toString('HEX');
-    await connection('usuario').insert(
-        {
-            id,
-            nome,
-            email,
-            telefone
-        }
-    )
-    return response.json({id});
+routes.post('/peca', async (request, response) => {
+    await connection('peca').insert(request.body);
+    return response.json();
 });
 
-routes.get('/usuario/', async (request, response) => {
-    const usuarios = await connection('usuario').select('*');
+routes.get('/peca', async (request, response) => {
+    const pecas = await connection('peca').select('*');
 
-    return response.json(usuarios);
+    return response.json(pecas);
 });
 
 module.exports = routes;

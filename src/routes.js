@@ -2,6 +2,15 @@ const express = require('express');
 const routes = express.Router();
 const connection = require('./database/connection');
 
+routes.post('/login', async (request, response) => {
+    let res;
+    await connection('usuario').where({'email': request.body.email, 'senha': request.body.senha})
+        .then(resServer => {
+            res = resServer;
+        });
+    return response.json(res);
+});
+
 routes.post('/peca', async (request, response) => {
     await connection('peca').insert(request.body);
     return response.json();
